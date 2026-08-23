@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Globalization — Infographic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#131F3D;
+    --navy-deep:#0B1428;
+    --paper:#F6F3EC;
+    --gold:#C9972E;
+    --teal:#2F8F86;
+    --coral:#D9614B;
+    --ink:#1A1A1A;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{background:#3a3a3a;}
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--ink);
+    display:flex;
+    justify-content:center;
+    padding:24px 0;
+  }
+  .page{
+    width:794px;
+    min-height:1123px;
+    background:var(--paper);
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 10px 40px rgba(0,0,0,.4);
+  }
+
+  /* connecting spine motif — the signature element */
+  .spine{
+    position:absolute;
+    left:64px;
+    top:0;
+    bottom:0;
+    width:2px;
+    z-index:1;
+  }
+  .spine svg{position:absolute; top:0; left:-1px; height:100%; width:3px;}
+  .node{
+    position:absolute;
+    left:64px;
+    width:14px; height:14px;
+    border-radius:50%;
+    background:var(--gold);
+    transform:translate(-50%,-50%);
+    border:3px solid var(--paper);
+    z-index:3;
+  }
+
+  /* header */
+  .header{
+    background:var(--navy);
+    background-image:
+      radial-gradient(circle at 85% 20%, rgba(201,151,46,0.18), transparent 45%),
+      radial-gradient(circle at 15% 80%, rgba(47,143,134,0.15), transparent 40%);
+    color:var(--paper);
+    padding:46px 56px 40px 96px;
+    position:relative;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:14px;
+  }
+  .title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:56px;
+    line-height:1.02;
+    letter-spacing:-.01em;
+  }
+  .title em{
+    font-style:italic;
+    font-weight:400;
+    color:var(--gold);
+  }
+  .subtitle{
+    margin-top:14px;
+    font-size:14.5px;
+    line-height:1.55;
+    max-width:520px;
+    color:#D8DCE6;
+  }
+  .globe{
+    position:absolute;
+    right:40px;
+    top:36px;
+    width:118px;
+    height:118px;
+    opacity:.9;
+  }
+
+  /* sections */
+  .section{
+    position:relative;
+    padding:34px 56px 34px 96px;
+    border-bottom:1px solid rgba(19,31,61,.08);
+  }
+  .tag{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    margin-bottom:8px;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+  }
+  .sec-title{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:26px;
+    margin-bottom:12px;
+    letter-spacing:-.01em;
+  }
+  .sec-body{
+    font-size:14px;
+    line-height:1.6;
+    color:#33343a;
+    max-width:600px;
+  }
+
+  /* 1. definition */
+  .s-def .tag, .s-def .node{color:var(--gold); background:var(--gold);}
+  .s-def .sec-title{color:var(--navy);}
+  .def-quote{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:19px;
+    line-height:1.5;
+    color:var(--navy);
+    border-left:3px solid var(--gold);
+    padding-left:18px;
+    margin-top:14px;
+    max-width:580px;
+  }
+
+  /* 2. causes */
+  .s-cause .node{background:var(--teal);}
+  .s-cause .tag{color:var(--teal);}
+  .s-cause .sec-title{color:var(--navy);}
+  .grid4{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+    margin-top:16px;
+    max-width:620px;
+  }
+  .cause-card{
+    background:#fff;
+    border:1px solid rgba(47,143,134,.25);
+    border-radius:6px;
+    padding:14px 16px;
+  }
+  .cause-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--teal);
+    margin-bottom:6px;
+  }
+  .cause-name{
+    font-weight:600;
+    font-size:14.5px;
+    color:var(--navy);
+    margin-bottom:4px;
+  }
+  .cause-desc{
+    font-size:12.5px;
+    color:#4a4b52;
+    line-height:1.5;
+  }
+
+  /* 3. effects */
+  .s-effect .node{background:var(--coral);}
+  .s-effect .tag{color:var(--coral);}
+  .s-effect .sec-title{color:var(--navy);}
+  .split{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+    margin-top:16px;
+    max-width:620px;
+  }
+  .split-col{border-top:2px solid var(--coral); padding-top:10px;}
+  .split-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:.1em;
+    text-transform:uppercase;
+    color:var(--coral);
+    margin-bottom:8px;
+  }
+  .split ul{list-style:none;}
+  .split li{
+    font-size:13px;
+    line-height:1.55;
+    padding-left:14px;
+    position:relative;
+    margin-bottom:7px;
+    color:#33343a;
+  }
+  .split li::before{
+    content:"";
+    position:absolute;
+    left:0; top:7px;
+    width:5px; height:5px;
+    border-radius:50%;
+    background:var(--coral);
+  }
+  .split-col:last-child li::before{background:var(--navy);}
+
+  /* 4. communication */
+  .s-comm{
+    background:var(--navy-deep);
+    color:var(--paper);
+    border-bottom:none;
+    padding-bottom:44px;
+  }
+  .s-comm .node{background:var(--paper); border-color:var(--navy-deep);}
+  .s-comm .tag{color:#8FD6CE;}
+  .s-comm .sec-title{color:var(--paper);}
+  .comm-flow{
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    margin-top:20px;
+    max-width:620px;
+  }
+  .comm-step{
+    flex:1;
+    background:rgba(255,255,255,.05);
+    border:1px solid rgba(255,255,255,.12);
+    padding:14px 12px;
+    position:relative;
+  }
+  .comm-step:not(:first-child){border-left:none;}
+  .comm-era{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    color:var(--gold);
+    letter-spacing:.08em;
+    margin-bottom:6px;
+  }
+  .comm-desc{font-size:12px; line-height:1.5; color:#C9CDD8;}
+  .comm-arrow{
+    color:var(--gold);
+    display:flex;
+    align-items:center;
+    padding:0 4px;
+    font-size:14px;
+  }
+
+  /* footer */
+  .footer{
+    padding:20px 56px 26px 96px;
+    background:var(--navy-deep);
+    color:#8890A3;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10px;
+    letter-spacing:.06em;
+    display:flex;
+    justify-content:space-between;
+  }
+
+  @media print{
+    body{padding:0; background:var(--paper);}
+    .page{box-shadow:none;}
+    @page{ size:A4; margin:0; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="spine">
+    <svg preserveAspectRatio="none" viewBox="0 0 3 1123"><line x1="1.5" y1="0" x2="1.5" y2="1123" stroke="#C9972E" stroke-width="2" stroke-dasharray="1 7" stroke-linecap="round"/></svg>
+  </div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow">Enrichment Activity — Globalization</div>
+    <div class="title">A world<br><em>stitched</em> together</div>
+    <div class="subtitle">How trade, technology, and shared culture pulled the planet into one connected system — and what that connection costs and creates.</div>
+    <svg class="globe" viewBox="0 0 120 120" fill="none">
+      <circle cx="60" cy="60" r="52" stroke="#C9972E" stroke-width="1.2" opacity="0.55"/>
+      <ellipse cx="60" cy="60" rx="52" ry="20" stroke="#8FD6CE" stroke-width="1" opacity="0.5"/>
+      <ellipse cx="60" cy="60" rx="52" ry="35" stroke="#8FD6CE" stroke-width="1" opacity="0.35"/>
+      <line x1="8" y1="60" x2="112" y2="60" stroke="#C9972E" stroke-width="1" opacity="0.4"/>
+      <line x1="60" y1="8" x2="60" y2="112" stroke="#C9972E" stroke-width="1" opacity="0.4"/>
+      <circle cx="34" cy="42" r="2.5" fill="#D9614B"/>
+      <circle cx="80" cy="36" r="2.5" fill="#C9972E"/>
+      <circle cx="86" cy="78" r="2.5" fill="#8FD6CE"/>
+      <circle cx="30" cy="82" r="2.5" fill="#D9614B"/>
+      <line x1="34" y1="42" x2="80" y2="36" stroke="#F6F3EC" stroke-width="0.6" opacity="0.6"/>
+      <line x1="80" y1="36" x2="86" y2="78" stroke="#F6F3EC" stroke-width="0.6" opacity="0.6"/>
+      <line x1="86" y1="78" x2="30" y2="82" stroke="#F6F3EC" stroke-width="0.6" opacity="0.6"/>
+      <line x1="30" y1="82" x2="34" y2="42" stroke="#F6F3EC" stroke-width="0.6" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <!-- 1. DEFINITION -->
+  <div class="section s-def">
+    <div class="node" style="top:26px; background:var(--gold);"></div>
+    <div class="tag">① Definition</div>
+    <div class="sec-title">What globalization means</div>
+    <div class="sec-body">Globalization is the growing interconnection of the world's economies, cultures, and populations — driven by cross-border trade, investment, technology, and the movement of people and information.</div>
+    <div class="def-quote">"The process by which the world becomes a single, interdependent system — economically, socially, and culturally."</div>
+  </div>
+
+  <!-- 2. CAUSES -->
+  <div class="section s-cause">
+    <div class="node" style="top:26px; background:var(--teal);"></div>
+    <div class="tag">② Causes</div>
+    <div class="sec-title">What drives it</div>
+    <div class="sec-body">Four forces accelerated the shift from separate national economies to one interlinked global system.</div>
+    <div class="grid4">
+      <div class="cause-card">
+        <div class="cause-num">01</div>
+        <div class="cause-name">Technology &amp; the internet</div>
+        <div class="cause-desc">Instant communication and data transfer erased distance as a barrier to doing business.</div>
+      </div>
+      <div class="cause-card">
+        <div class="cause-num">02</div>
+        <div class="cause-name">Trade liberalization</div>
+        <div class="cause-desc">Lower tariffs and free-trade agreements made cross-border commerce cheaper and faster.</div>
+      </div>
+      <div class="cause-card">
+        <div class="cause-num">03</div>
+        <div class="cause-name">Transportation advances</div>
+        <div class="cause-desc">Container shipping and air freight cut the cost and time of moving goods worldwide.</div>
+      </div>
+      <div class="cause-card">
+        <div class="cause-num">04</div>
+        <div class="cause-name">Multinational corporations</div>
+        <div class="cause-desc">Companies expanded operations across countries, linking markets and labor forces together.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. EFFECTS -->
+  <div class="section s-effect">
+    <div class="node" style="top:26px; background:var(--coral);"></div>
+    <div class="tag">③ Effects</div>
+    <div class="sec-title">What it changes</div>
+    <div class="sec-body">Globalization brings real gains alongside real costs — the two sides usually arrive together.</div>
+    <div class="split">
+      <div class="split-col">
+        <div class="split-label">Positive</div>
+        <ul>
+          <li>Wider access to goods, jobs, and markets</li>
+          <li>Faster spread of knowledge and innovation</li>
+          <li>Lower prices through global competition</li>
+          <li>Cultural exchange and shared ideas</li>
+        </ul>
+      </div>
+      <div class="split-col">
+        <div class="split-label">Negative</div>
+        <ul>
+          <li>Local industries struggle against global competitors</li>
+          <li>Wealth gaps widen between and within nations</li>
+          <li>Traditional cultures can be diluted</li>
+          <li>Economic shocks spread across borders faster</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. COMMUNICATION -->
+  <div class="section s-comm">
+    <div class="node" style="top:26px; background:var(--paper); border-color:var(--navy-deep);"></div>
+    <div class="tag">④ Effects on communication</div>
+    <div class="sec-title">How the world talks now</div>
+    <div class="sec-body" style="color:#C9CDD8;">Communication changed the fastest of anything globalization touched — collapsing the time between "I have news" and "the world knows."</div>
+    <div class="comm-flow">
+      <div class="comm-step">
+        <div class="comm-era">Before</div>
+        <div class="comm-desc">Letters and calls limited by distance, cost, and time zones.</div>
+      </div>
+      <div class="comm-arrow">→</div>
+      <div class="comm-step">
+        <div class="comm-era">Shift</div>
+        <div class="comm-desc">Internet and mobile networks make contact instant and near-free.</div>
+      </div>
+      <div class="comm-arrow">→</div>
+      <div class="comm-step">
+        <div class="comm-era">Now</div>
+        <div class="comm-desc">Social media links strangers across countries into one shared conversation.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>ENRICHMENT ACTIVITY — INFOGRAPHIC</span>
+    <span>A4</span>
+  </div>
+
+</div>
+</body>
+</html>
