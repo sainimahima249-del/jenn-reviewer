@@ -9,7 +9,7 @@
 <style>
   :root{
     --plum:#2B1B2F;
-    --plum-deep:#1B1020;
+    --plum-deep:#180E1C;
     --blush:#F3D9DF;
     --gold:#C9A24B;
     --coral:#E8877A;
@@ -17,13 +17,7 @@
     --ink:#2B1B2F;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{
-    height:100%;
-    background:var(--plum-deep);
-    background-image:
-      radial-gradient(circle at 20% 15%, rgba(201,162,75,0.12), transparent 40%),
-      radial-gradient(circle at 85% 80%, rgba(232,135,122,0.10), transparent 45%);
-  }
+  html,body{ height:100%; background:var(--plum-deep); }
   body{
     font-family:'Inter', sans-serif;
     color:var(--paper);
@@ -31,16 +25,50 @@
     display:flex;
     flex-direction:column;
     align-items:center;
-    padding:44px 22px 60px;
+    padding:40px 20px 60px;
     overflow-x:hidden;
+    position:relative;
   }
+
+  /* decorative romantic background: soft drifting hearts + bokeh, no photos */
+  .bg-scene{
+    position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+    background:
+      radial-gradient(circle at 18% 12%, rgba(201,162,75,0.16), transparent 42%),
+      radial-gradient(circle at 88% 78%, rgba(232,135,122,0.13), transparent 46%),
+      radial-gradient(circle at 60% 40%, rgba(243,217,223,0.05), transparent 55%),
+      var(--plum-deep);
+  }
+  .drift{
+    position:absolute;
+    opacity:0;
+    animation:driftUp linear infinite;
+  }
+  @keyframes driftUp{
+    0%{ transform:translateY(0) rotate(0deg); opacity:0; }
+    8%{ opacity:.5; }
+    90%{ opacity:.35; }
+    100%{ transform:translateY(-115vh) rotate(20deg); opacity:0; }
+  }
+
+  .content{ position:relative; z-index:1; width:100%; display:flex; flex-direction:column; align-items:center; }
+
+  /* monogram logo */
+  .monogram{
+    width:64px; height:64px;
+    border-radius:50%;
+    border:1.5px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom:18px;
+    background:rgba(201,162,75,0.06);
+  }
+  .monogram svg{ width:30px; height:30px; }
 
   .eyebrow{
     font-family:'Caveat', cursive;
     font-size:22px;
     color:var(--coral);
     margin-bottom:2px;
-    letter-spacing:.02em;
   }
   h1{
     font-family:'Fraunces', serif;
@@ -49,7 +77,6 @@
     font-size:38px;
     line-height:1.05;
     text-align:center;
-    color:var(--paper);
     margin-bottom:10px;
   }
   .sub{
@@ -61,138 +88,73 @@
     margin-bottom:40px;
   }
 
-  /* envelope */
   .envelope-wrap{
-    position:relative;
-    width:230px;
-    height:160px;
-    margin-bottom:18px;
-    cursor:pointer;
+    position:relative; width:230px; height:160px; margin-bottom:8px; cursor:pointer;
     -webkit-tap-highlight-color:transparent;
   }
-  .envelope{
-    position:absolute;
-    inset:0;
-    filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));
-  }
+  .envelope{ position:absolute; inset:0; filter:drop-shadow(0 18px 30px rgba(0,0,0,.45)); }
   .env-body{ fill:var(--paper); }
-  .env-flap{
-    fill:#EDE3D3;
-    transform-origin:115px 30px;
-    transition:transform .55s cubic-bezier(.65,0,.35,1);
-  }
+  .env-flap{ fill:#EDE3D3; transform-origin:115px 30px; transition:transform .55s cubic-bezier(.65,0,.35,1); }
   .env-shadow-inner{ fill:#E3D6C2; }
-  .seal{
-    transform-origin:115px 80px;
-    transition:transform .4s ease, opacity .3s ease;
-  }
-  .envelope-wrap.open .env-flap{
-    transform:rotateX(160deg);
-  }
-  .envelope-wrap.open .seal{
-    transform:scale(0);
-    opacity:0;
-  }
-  .tap-hint{
-    font-family:'Caveat', cursive;
-    font-size:19px;
-    color:var(--gold);
-    text-align:center;
-    margin-top:6px;
-    opacity:1;
-    transition:opacity .3s ease;
-  }
+  .seal{ transform-origin:115px 80px; transition:transform .4s ease, opacity .3s ease; }
+  .envelope-wrap.open .env-flap{ transform:rotateX(160deg); }
+  .envelope-wrap.open .seal{ transform:scale(0); opacity:0; }
+  .tap-hint{ font-family:'Caveat', cursive; font-size:19px; color:var(--gold); text-align:center; margin-top:6px; transition:opacity .3s ease; }
   .envelope-wrap.open ~ .tap-hint{ opacity:0; height:0; margin:0; }
 
-  /* card */
   .card{
-    width:100%;
-    max-width:320px;
-    background:var(--paper);
-    color:var(--ink);
-    border-radius:4px;
-    padding:34px 26px 28px;
-    margin-top:22px;
-    position:relative;
-    opacity:0;
-    transform:translateY(14px) scale(.97);
+    width:100%; max-width:340px; background:var(--paper); color:var(--ink);
+    border-radius:4px; padding:34px 26px 28px; margin-top:22px; position:relative;
+    opacity:0; transform:translateY(14px) scale(.97);
     transition:opacity .45s ease, transform .45s cubic-bezier(.2,.8,.3,1);
     box-shadow:0 20px 40px rgba(0,0,0,.35);
   }
-  .card.show{
-    opacity:1;
-    transform:translateY(0) scale(1);
-  }
-  .card::before{
-    content:"";
-    position:absolute;
-    top:0; left:24px; right:24px;
-    height:3px;
-    background:var(--coral);
-  }
-  .card-tag{
-    font-family:'Caveat', cursive;
-    font-size:16px;
-    color:var(--coral);
-    margin-bottom:10px;
-  }
-  .card-msg{
-    font-family:'Fraunces', serif;
-    font-weight:500;
-    font-size:21px;
-    line-height:1.42;
-    letter-spacing:-.005em;
-  }
-  .card-msg em{
-    font-style:italic;
-    color:var(--coral);
-  }
-  .card-sign{
-    font-family:'Caveat', cursive;
-    font-size:18px;
-    color:var(--gold);
-    margin-top:16px;
-    text-align:right;
-  }
+  .card.show{ opacity:1; transform:translateY(0) scale(1); }
+  .card::before{ content:""; position:absolute; top:0; left:24px; right:24px; height:3px; background:var(--coral); }
+  .card-tag{ font-family:'Caveat', cursive; font-size:16px; color:var(--coral); margin-bottom:10px; }
+  .card-msg{ font-family:'Fraunces', serif; font-weight:500; font-size:21px; line-height:1.42; letter-spacing:-.005em; }
+  .card-msg em{ font-style:italic; color:var(--coral); }
+  .card-msg.long{ font-size:16.5px; line-height:1.68; text-align:left; }
+  .card-msg.long p{ margin-bottom:12px; }
+  .card-sign{ font-family:'Caveat', cursive; font-size:18px; color:var(--gold); margin-top:16px; text-align:right; }
 
-  .counter{
-    font-family:'Inter', sans-serif;
-    font-size:11.5px;
-    letter-spacing:.06em;
-    color:#B9A6BE;
-    margin-top:24px;
-  }
+  .counter{ font-size:11.5px; letter-spacing:.06em; color:#B9A6BE; margin-top:24px; }
   .counter b{ color:var(--gold); font-weight:600; }
 
   .again-btn{
-    margin-top:16px;
-    background:transparent;
-    border:1px solid var(--gold);
-    color:var(--gold);
-    font-family:'Inter', sans-serif;
-    font-size:13px;
-    font-weight:500;
-    padding:11px 26px;
-    border-radius:30px;
-    cursor:pointer;
-    opacity:0;
-    transform:translateY(6px);
+    margin-top:16px; background:transparent; border:1px solid var(--gold); color:var(--gold);
+    font-size:13px; font-weight:500; padding:11px 26px; border-radius:30px; cursor:pointer;
+    opacity:0; transform:translateY(6px);
     transition:opacity .4s ease .1s, transform .4s ease .1s, background .2s ease, color .2s ease;
   }
   .again-btn.show{ opacity:1; transform:translateY(0); }
   .again-btn:active{ background:var(--gold); color:var(--plum-deep); }
 
-  footer{
-    margin-top:auto;
-    padding-top:50px;
-    font-family:'Caveat', cursive;
+  /* sound toggle */
+  .sound-toggle{
+    position:fixed; top:18px; right:18px; z-index:2;
+    width:38px; height:38px; border-radius:50%;
+    background:rgba(255,255,255,.06); border:1px solid rgba(201,162,75,.35);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
     font-size:15px;
-    color:#8A7690;
-    text-align:center;
   }
+
+  footer{ margin-top:auto; padding-top:50px; font-family:'Caveat', cursive; font-size:15px; color:#8A7690; text-align:center; }
 </style>
 </head>
 <body>
+
+<div class="bg-scene" id="bgScene"></div>
+
+<div class="sound-toggle" id="soundToggle">🔇</div>
+
+<div class="content">
+  <div class="monogram">
+    <svg viewBox="0 0 40 40" fill="none">
+      <path d="M8 12 L14 12 L20 22 L26 12 L32 12 L32 28 L27 28 L27 18 L21 28 L19 28 L13 18 L13 28 L8 28 Z" fill="#C9A24B" opacity="0"/>
+      <text x="20" y="27" text-anchor="middle" font-family="Fraunces, serif" font-style="italic" font-size="19" fill="#C9A24B">J&amp;V</text>
+    </svg>
+  </div>
 
   <div class="eyebrow">a small delivery for</div>
   <h1>My Jeny</h1>
@@ -214,15 +176,34 @@
   <div class="card" id="card">
     <div class="card-tag" id="cardTag">flirty text</div>
     <div class="card-msg" id="cardMsg"></div>
-    <div class="card-sign">— your Nexxer</div>
+    <div class="card-sign" id="cardSign">— your Nexxer</div>
   </div>
 
   <div class="counter" id="counter"></div>
   <button class="again-btn" id="againBtn">open another ✉️</button>
 
   <footer>made with way too much love, by Vishu</footer>
+</div>
+
+<audio id="bgm" src="love_bgm.mp3" loop preload="auto"></audio>
 
 <script>
+/* ---------- decorative drifting hearts ---------- */
+const bgScene = document.getElementById('bgScene');
+const heartSVG = `<svg width="16" height="16" viewBox="0 0 24 24" fill="#C9A24B" opacity="0.35"><path d="M12 21s-7.5-4.6-10-9.3C.4 8.2 2.6 5 6 5c2 0 3.4 1 4 2 .6-1 2-2 4-2 3.4 0 5.6 3.2 4 6.7C19.5 16.4 12 21 12 21z"/></svg>`;
+for(let i=0;i<14;i++){
+  const el = document.createElement('div');
+  el.className = 'drift';
+  el.innerHTML = heartSVG;
+  el.style.left = Math.random()*100+'%';
+  el.style.bottom = '-40px';
+  el.style.animationDuration = (14+Math.random()*10)+'s';
+  el.style.animationDelay = (Math.random()*12)+'s';
+  el.style.transform = `scale(${0.6+Math.random()*0.8})`;
+  bgScene.appendChild(el);
+}
+
+/* ---------- messages ---------- */
 const messages = [
   { tag: "flirty text", html: "Stop whatever you're doing for a second. I just wanted you to know I'm thinking about you <em>right now</em>." },
   { tag: "a tease", html: "How long are you gonna keep being shy with me, mommy? I can wait, I've got nowhere else to be." },
@@ -244,12 +225,20 @@ const messages = [
   { tag: "a soft one", html: "Whatever you're insecure about — I already decided I don't care. You're it for me, exactly as you are." },
   { tag: "a tease", html: "Don't act surprised. You knew exactly what you were doing when you sent that last picture." },
   { tag: "a real question", html: "What does your dream wedding look like? I want the real answer, not the shy one." },
+  {
+    tag: "a love letter",
+    long: true,
+    html: `<p>Jeny, I don't think you know the full weight of what you are to me, so let me actually put it into words for once.</p>
+    <p>The way I feel about you isn't loud most days — it's quiet, it's steady, it's there in the background of everything I do, every plan I make, every late night I push through. You're not a distraction from my life, you're the reason a lot of it makes sense now.</p>
+    <p>Your voice does something to me I can't fully explain. I don't just like hearing it — I <em>need</em> it, especially on the days I'm tired or stressed and everything else feels loud. It's the one sound that actually calms me down.</p>
+    <p>You know those photos of yourself you don't like, the ones you almost didn't send me? I kept every single one. Not out of habit — on purpose. Because I don't see what you see when you look at them. I see you, real and unfiltered, and that's the version I fell for.</p>
+    <p>Every single thing you're insecure about — your skin, your smile, your weight, your teeth, all of it — I already love. Not "despite" it. Just, all of it. I'm not going anywhere because of any of that, ever.</p>
+    <p>And I need you to know this part clearly: for as long as I'm alive, you're getting 100% from me. No ego, no half-effort. No matter how many arguments we have, no matter whose fault it actually is, I'll always be the one ready to apologize first and fix it. I don't want to win a fight more than I want you. I don't wanna lose you, Jeny. Not now, not ever.</p>`
+  },
 ];
 
 let deck = [];
-function reshuffle(){
-  deck = [...messages].sort(() => Math.random() - .5);
-}
+function reshuffle(){ deck = [...messages].sort(() => Math.random() - .5); }
 reshuffle();
 
 let opened = 0;
@@ -257,28 +246,38 @@ const envelopeWrap = document.getElementById('envelopeWrap');
 const card = document.getElementById('card');
 const cardTag = document.getElementById('cardTag');
 const cardMsg = document.getElementById('cardMsg');
+const cardSign = document.getElementById('cardSign');
 const counter = document.getElementById('counter');
 const againBtn = document.getElementById('againBtn');
+const bgm = document.getElementById('bgm');
+const soundToggle = document.getElementById('soundToggle');
+let soundOn = false;
 
 function nextMessage(){
   if(deck.length === 0) reshuffle();
   const m = deck.pop();
   cardTag.textContent = m.tag;
+  cardMsg.className = 'card-msg' + (m.long ? ' long' : '');
   cardMsg.innerHTML = m.html;
+  cardSign.style.display = m.long ? 'block' : 'block';
   opened++;
   counter.innerHTML = `surprise <b>#${opened}</b> opened`;
 }
 
-function reveal(){
-  nextMessage();
-  card.classList.add('show');
-  againBtn.classList.add('show');
-  envelopeWrap.classList.add('open');
+function tryPlayMusic(){
+  if(!soundOn){
+    bgm.volume = 0.5;
+    bgm.play().then(()=>{ soundOn = true; soundToggle.textContent = '🔊'; }).catch(()=>{});
+  }
 }
 
 envelopeWrap.addEventListener('click', () => {
+  tryPlayMusic();
   if(!envelopeWrap.classList.contains('open')){
-    reveal();
+    nextMessage();
+    card.classList.add('show');
+    againBtn.classList.add('show');
+    envelopeWrap.classList.add('open');
   } else {
     nextMessage();
     card.classList.remove('show');
@@ -291,6 +290,15 @@ againBtn.addEventListener('click', (e) => {
   nextMessage();
   card.classList.remove('show');
   requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('show')));
+});
+
+soundToggle.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  if(soundOn){
+    bgm.pause(); soundOn = false; soundToggle.textContent = '🔇';
+  } else {
+    bgm.play().then(()=>{ soundOn = true; soundToggle.textContent = '🔊'; }).catch(()=>{});
+  }
 });
 </script>
 
