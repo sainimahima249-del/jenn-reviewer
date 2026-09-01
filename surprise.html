@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Jeny 💌</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#2B1B2F;
+    --plum-deep:#1B1020;
+    --blush:#F3D9DF;
+    --gold:#C9A24B;
+    --coral:#E8877A;
+    --paper:#FBF6EE;
+    --ink:#2B1B2F;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html,body{
+    height:100%;
+    background:var(--plum-deep);
+    background-image:
+      radial-gradient(circle at 20% 15%, rgba(201,162,75,0.12), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(232,135,122,0.10), transparent 45%);
+  }
+  body{
+    font-family:'Inter', sans-serif;
+    color:var(--paper);
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:44px 22px 60px;
+    overflow-x:hidden;
+  }
+
+  .eyebrow{
+    font-family:'Caveat', cursive;
+    font-size:22px;
+    color:var(--coral);
+    margin-bottom:2px;
+    letter-spacing:.02em;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:38px;
+    line-height:1.05;
+    text-align:center;
+    color:var(--paper);
+    margin-bottom:10px;
+  }
+  .sub{
+    font-size:13.5px;
+    color:#D8C9DC;
+    text-align:center;
+    max-width:260px;
+    line-height:1.55;
+    margin-bottom:40px;
+  }
+
+  /* envelope */
+  .envelope-wrap{
+    position:relative;
+    width:230px;
+    height:160px;
+    margin-bottom:18px;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .envelope{
+    position:absolute;
+    inset:0;
+    filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));
+  }
+  .env-body{ fill:var(--paper); }
+  .env-flap{
+    fill:#EDE3D3;
+    transform-origin:115px 30px;
+    transition:transform .55s cubic-bezier(.65,0,.35,1);
+  }
+  .env-shadow-inner{ fill:#E3D6C2; }
+  .seal{
+    transform-origin:115px 80px;
+    transition:transform .4s ease, opacity .3s ease;
+  }
+  .envelope-wrap.open .env-flap{
+    transform:rotateX(160deg);
+  }
+  .envelope-wrap.open .seal{
+    transform:scale(0);
+    opacity:0;
+  }
+  .tap-hint{
+    font-family:'Caveat', cursive;
+    font-size:19px;
+    color:var(--gold);
+    text-align:center;
+    margin-top:6px;
+    opacity:1;
+    transition:opacity .3s ease;
+  }
+  .envelope-wrap.open ~ .tap-hint{ opacity:0; height:0; margin:0; }
+
+  /* card */
+  .card{
+    width:100%;
+    max-width:320px;
+    background:var(--paper);
+    color:var(--ink);
+    border-radius:4px;
+    padding:34px 26px 28px;
+    margin-top:22px;
+    position:relative;
+    opacity:0;
+    transform:translateY(14px) scale(.97);
+    transition:opacity .45s ease, transform .45s cubic-bezier(.2,.8,.3,1);
+    box-shadow:0 20px 40px rgba(0,0,0,.35);
+  }
+  .card.show{
+    opacity:1;
+    transform:translateY(0) scale(1);
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:0; left:24px; right:24px;
+    height:3px;
+    background:var(--coral);
+  }
+  .card-tag{
+    font-family:'Caveat', cursive;
+    font-size:16px;
+    color:var(--coral);
+    margin-bottom:10px;
+  }
+  .card-msg{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:21px;
+    line-height:1.42;
+    letter-spacing:-.005em;
+  }
+  .card-msg em{
+    font-style:italic;
+    color:var(--coral);
+  }
+  .card-sign{
+    font-family:'Caveat', cursive;
+    font-size:18px;
+    color:var(--gold);
+    margin-top:16px;
+    text-align:right;
+  }
+
+  .counter{
+    font-family:'Inter', sans-serif;
+    font-size:11.5px;
+    letter-spacing:.06em;
+    color:#B9A6BE;
+    margin-top:24px;
+  }
+  .counter b{ color:var(--gold); font-weight:600; }
+
+  .again-btn{
+    margin-top:16px;
+    background:transparent;
+    border:1px solid var(--gold);
+    color:var(--gold);
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:500;
+    padding:11px 26px;
+    border-radius:30px;
+    cursor:pointer;
+    opacity:0;
+    transform:translateY(6px);
+    transition:opacity .4s ease .1s, transform .4s ease .1s, background .2s ease, color .2s ease;
+  }
+  .again-btn.show{ opacity:1; transform:translateY(0); }
+  .again-btn:active{ background:var(--gold); color:var(--plum-deep); }
+
+  footer{
+    margin-top:auto;
+    padding-top:50px;
+    font-family:'Caveat', cursive;
+    font-size:15px;
+    color:#8A7690;
+    text-align:center;
+  }
+</style>
+</head>
+<body>
+
+  <div class="eyebrow">a small delivery for</div>
+  <h1>My Jeny</h1>
+  <div class="sub">Tap the envelope. One little surprise every time — open as many as you want.</div>
+
+  <div class="envelope-wrap" id="envelopeWrap">
+    <svg class="envelope" viewBox="0 0 230 160" xmlns="http://www.w3.org/2000/svg">
+      <rect class="env-body" x="0" y="30" width="230" height="130" rx="4"/>
+      <polygon class="env-shadow-inner" points="0,30 115,105 230,30 230,50 115,120 0,50"/>
+      <polygon class="env-flap" points="0,30 115,105 230,30" stroke="#DACBB0" stroke-width="1"/>
+      <g class="seal">
+        <circle cx="115" cy="80" r="19" fill="#C9A24B"/>
+        <path d="M115 71 C112 75 108 76 108 80 C108 84 111 87 115 87 C119 87 122 84 122 80 C122 76 118 75 115 71 Z" fill="#F3D9DF" opacity=".85"/>
+      </g>
+    </svg>
+    <div class="tap-hint">tap to open ✨</div>
+  </div>
+
+  <div class="card" id="card">
+    <div class="card-tag" id="cardTag">flirty text</div>
+    <div class="card-msg" id="cardMsg"></div>
+    <div class="card-sign">— your Nexxer</div>
+  </div>
+
+  <div class="counter" id="counter"></div>
+  <button class="again-btn" id="againBtn">open another ✉️</button>
+
+  <footer>made with way too much love, by Vishu</footer>
+
+<script>
+const messages = [
+  { tag: "flirty text", html: "Stop whatever you're doing for a second. I just wanted you to know I'm thinking about you <em>right now</em>." },
+  { tag: "a tease", html: "How long are you gonna keep being shy with me, mommy? I can wait, I've got nowhere else to be." },
+  { tag: "a real question", html: "Can I book you for the next <em>70 years</em>? No refunds, no exchanges — just you and me, growing old together." },
+  { tag: "a real question", html: "Will you be my future wife? Take your time answering. I already know what I want you to say." },
+  { tag: "flirty text", html: "You have no idea what your voice does to me when you're half asleep and still trying to talk to me." },
+  { tag: "a real question", html: "How do you picture the life we build together — the house, the mornings, all of it? Tell me everything." },
+  { tag: "a tease", html: "Careful. Keep looking that pretty in every video you send and I'm never getting anything done today." },
+  { tag: "a real question", html: "How many kids do you want with me one day? Don't overthink it, just tell me the first number in your head." },
+  { tag: "flirty text", html: "If I could teleport anywhere right now, it wouldn't even be a question. It'd be straight to you." },
+  { tag: "a tease", html: "You already know you're mine, right? Just checking, cuz I like hearing you say it." },
+  { tag: "a soft one", html: "Every plan I make for the future has you in it. Every single one. That's not gonna change." },
+  { tag: "flirty text", html: "I dare you to send me a voice note right now saying my name. I'll wait." },
+  { tag: "a real question", html: "What's the first thing you want us to do together, the day we finally meet in person?" },
+  { tag: "a tease", html: "Ngl I like it when you get all shy and start typing 'stop' — means I'm doing something right." },
+  { tag: "a soft one", html: "I don't need a reason to miss you. I just do, all the time, even mid-conversation with you." },
+  { tag: "flirty text", html: "You're lucky you're cute, cuz otherwise I'd be way less patient waiting for your replies." },
+  { tag: "a real question", html: "If we had one whole day together, no work, no distance, no phones — what would you want to do?" },
+  { tag: "a soft one", html: "Whatever you're insecure about — I already decided I don't care. You're it for me, exactly as you are." },
+  { tag: "a tease", html: "Don't act surprised. You knew exactly what you were doing when you sent that last picture." },
+  { tag: "a real question", html: "What does your dream wedding look like? I want the real answer, not the shy one." },
+];
+
+let deck = [];
+function reshuffle(){
+  deck = [...messages].sort(() => Math.random() - .5);
+}
+reshuffle();
+
+let opened = 0;
+const envelopeWrap = document.getElementById('envelopeWrap');
+const card = document.getElementById('card');
+const cardTag = document.getElementById('cardTag');
+const cardMsg = document.getElementById('cardMsg');
+const counter = document.getElementById('counter');
+const againBtn = document.getElementById('againBtn');
+
+function nextMessage(){
+  if(deck.length === 0) reshuffle();
+  const m = deck.pop();
+  cardTag.textContent = m.tag;
+  cardMsg.innerHTML = m.html;
+  opened++;
+  counter.innerHTML = `surprise <b>#${opened}</b> opened`;
+}
+
+function reveal(){
+  nextMessage();
+  card.classList.add('show');
+  againBtn.classList.add('show');
+  envelopeWrap.classList.add('open');
+}
+
+envelopeWrap.addEventListener('click', () => {
+  if(!envelopeWrap.classList.contains('open')){
+    reveal();
+  } else {
+    nextMessage();
+    card.classList.remove('show');
+    requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('show')));
+  }
+});
+
+againBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  nextMessage();
+  card.classList.remove('show');
+  requestAnimationFrame(() => requestAnimationFrame(() => card.classList.add('show')));
+});
+</script>
+
+</body>
+</html>
