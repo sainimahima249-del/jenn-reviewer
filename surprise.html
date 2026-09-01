@@ -103,7 +103,7 @@
   .envelope-wrap.open ~ .tap-hint{ opacity:0; height:0; margin:0; }
 
   .card{
-    width:100%; max-width:340px; background:var(--paper); color:var(--ink);
+    width:100%; max-width:300px; background:var(--paper); color:var(--ink);
     border-radius:4px; padding:34px 26px 28px; margin-top:22px; position:relative;
     opacity:0; transform:translateY(14px) scale(.97);
     transition:opacity .45s ease, transform .45s cubic-bezier(.2,.8,.3,1);
@@ -117,6 +117,10 @@
   .card-msg.long{ font-size:16.5px; line-height:1.68; text-align:left; }
   .card-msg.long p{ margin-bottom:12px; }
   .card-sign{ font-family:'Caveat', cursive; font-size:18px; color:var(--gold); margin-top:16px; text-align:right; }
+
+  .illustration{ width:100%; max-width:230px; margin:4px auto 14px; display:block; }
+  .card-caption{ font-family:'Fraunces', serif; font-style:italic; font-weight:500; font-size:19px; text-align:center; line-height:1.4; }
+  .card-caption em{ font-style:italic; color:var(--coral); }
 
   .counter{ font-size:11.5px; letter-spacing:.06em; color:#B9A6BE; margin-top:24px; }
   .counter b{ color:var(--gold); font-weight:600; }
@@ -225,6 +229,7 @@ const messages = [
   { tag: "a soft one", html: "Whatever you're insecure about — I already decided I don't care. You're it for me, exactly as you are." },
   { tag: "a tease", html: "Don't act surprised. You knew exactly what you were doing when you sent that last picture." },
   { tag: "a real question", html: "What does your dream wedding look like? I want the real answer, not the shy one." },
+  { tag: "a real question", html: "Do you want me to be the father of your future kids one day? I already know my answer — I'm just curious about yours." },
   {
     tag: "a love letter",
     long: true,
@@ -242,6 +247,76 @@ function reshuffle(){ deck = [...messages].sort(() => Math.random() - .5); }
 reshuffle();
 
 let opened = 0;
+let cycles = 0; // how many full decks completed
+let pendingMilestone = null; // 'propose' | 'family'
+
+const proposeSVG = `
+<svg class="illustration" viewBox="0 0 220 200" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="110" cy="182" rx="95" ry="8" fill="#00000022"/>
+  <!-- girl -->
+  <g>
+    <ellipse cx="148" cy="70" rx="19" ry="21" fill="#F0C9A0"/>
+    <path d="M129 62 Q148 40 167 62 Q167 78 148 78 Q129 78 129 62Z" fill="#2B1B2F"/>
+    <path d="M148 90 Q125 100 122 150 Q122 175 148 178 Q174 175 174 150 Q171 100 148 90Z" fill="#E8877A"/>
+    <circle cx="141" cy="70" r="1.6" fill="#2B1B2F"/>
+    <circle cx="155" cy="70" r="1.6" fill="#2B1B2F"/>
+    <path d="M141 78 Q148 82 155 78" stroke="#2B1B2F" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- boy kneeling -->
+  <g>
+    <ellipse cx="80" cy="72" rx="18" ry="20" fill="#D9A066"/>
+    <path d="M62 66 Q80 44 98 66 Q98 60 90 58 Q84 50 70 58 Q62 60 62 66Z" fill="#1B1020"/>
+    <path d="M80 92 L60 118 L60 150 L72 150 L76 122 L88 150 L100 150 L96 116 L80 92Z" fill="#2B1B2F"/>
+    <rect x="66" y="140" width="14" height="26" rx="3" fill="#2B1B2F"/>
+    <rect x="88" y="150" width="18" height="16" rx="3" fill="#2B1B2F"/>
+    <circle cx="74" cy="72" r="1.6" fill="#1B1020"/>
+    <circle cx="87" cy="72" r="1.6" fill="#1B1020"/>
+    <path d="M75 80 Q81 76 87 80" stroke="#1B1020" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- ring box -->
+  <rect x="95" y="112" width="16" height="12" rx="1.5" fill="#C9A24B"/>
+  <circle cx="103" cy="108" r="4" fill="none" stroke="#F3D9DF" stroke-width="1.6"/>
+  <!-- hearts -->
+  <path d="M40 40 c-3-5-11-3-11 2 c0 5 11 12 11 12 s11-7 11-12 c0-5-8-7-11-2z" fill="#C9A24B" opacity=".55"/>
+  <path d="M188 130 c-2-4-8-2-8 1 c0 4 8 9 8 9 s8-5 8-9 c0-3-6-5-8-1z" fill="#E8877A" opacity=".55"/>
+  <text x="148" y="185" text-anchor="middle" font-family="Caveat, cursive" font-size="15" fill="#C9A24B">Jennie</text>
+  <text x="80" y="185" text-anchor="middle" font-family="Caveat, cursive" font-size="15" fill="#C9A24B">Nexx</text>
+</svg>`;
+
+const familySVG = `
+<svg class="illustration" viewBox="0 0 240 190" xmlns="http://www.w3.org/2000/svg">
+  <ellipse cx="120" cy="176" rx="110" ry="8" fill="#00000022"/>
+  <!-- little house silhouette -->
+  <path d="M30 100 L120 30 L210 100 L210 170 L30 170 Z" fill="#241631"/>
+  <rect x="60" y="120" width="34" height="50" rx="2" fill="#C9A24B" opacity=".85"/>
+  <rect x="146" y="115" width="26" height="26" rx="2" fill="#F3D9DF" opacity=".5"/>
+  <path d="M20 102 L120 24 L220 102" stroke="#C9A24B" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- parents sitting -->
+  <ellipse cx="105" cy="146" rx="14" ry="16" fill="#F0C9A0"/>
+  <path d="M92 140 Q105 122 118 140 Q118 150 105 150 Q92 150 92 140Z" fill="#2B1B2F"/>
+  <path d="M105 158 Q90 162 90 172 L120 172 Q120 162 105 158Z" fill="#E8877A"/>
+  <ellipse cx="138" cy="146" rx="13" ry="15" fill="#D9A066"/>
+  <path d="M126 140 Q138 122 150 140 Q150 134 144 132 Q138 126 130 132 Q126 134 126 140Z" fill="#1B1020"/>
+  <path d="M138 156 Q124 160 124 172 L152 172 Q152 160 138 156Z" fill="#2B1B2F"/>
+  <!-- two small kids -->
+  <ellipse cx="90" cy="160" rx="7" ry="8" fill="#F0C9A0"/>
+  <path d="M90 166 Q82 168 82 174 L98 174 Q98 168 90 166Z" fill="#C9A24B"/>
+  <ellipse cx="152" cy="160" rx="7" ry="8" fill="#D9A066"/>
+  <path d="M152 166 Q144 168 144 174 L160 174 Q160 168 152 166Z" fill="#E8877A"/>
+  <!-- hearts floating -->
+  <path d="M120 60 c-2-4-8-2-8 1 c0 4 8 9 8 9 s8-5 8-9 c0-3-6-5-8-1z" fill="#F3D9DF" opacity=".8"/>
+</svg>`;
+
+function showEnding(kind){
+  cardTag.textContent = kind === 'propose' ? "the proposal" : "happily ever after";
+  cardMsg.className = 'card-msg';
+  if(kind === 'propose'){
+    cardMsg.innerHTML = proposeSVG + `<div class="card-caption">Congratulations, Jennie 🥳<br><em>you're mine now.</em><br>no take-backs.</div>`;
+  } else {
+    cardMsg.innerHTML = familySVG + `<div class="card-caption">Long distance, finally over.<br><em>Nexx &amp; Jennie</em>, home, together —<br>with the two little ones you always talked about.</div>`;
+  }
+  cardSign.style.display = 'block';
+}
 const envelopeWrap = document.getElementById('envelopeWrap');
 const card = document.getElementById('card');
 const cardTag = document.getElementById('cardTag');
@@ -254,13 +329,19 @@ const soundToggle = document.getElementById('soundToggle');
 let soundOn = false;
 
 function nextMessage(){
-  if(deck.length === 0) reshuffle();
+  opened++;
+  if(deck.length === 0){
+    cycles++;
+    reshuffle();
+    showEnding(cycles % 2 === 1 ? 'propose' : 'family');
+    counter.innerHTML = `surprise <b>#${opened}</b> opened`;
+    return;
+  }
   const m = deck.pop();
   cardTag.textContent = m.tag;
   cardMsg.className = 'card-msg' + (m.long ? ' long' : '');
   cardMsg.innerHTML = m.html;
-  cardSign.style.display = m.long ? 'block' : 'block';
-  opened++;
+  cardSign.style.display = 'block';
   counter.innerHTML = `surprise <b>#${opened}</b> opened`;
 }
 
